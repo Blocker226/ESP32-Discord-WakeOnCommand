@@ -148,9 +148,11 @@ void setup() {
     discord.onInteraction(on_discord_interaction);
 }
 
+#ifdef _DISCORD_CLIENT_DEBUG
 long lastStackValue = 0;
 long lastStackCheck = 0;
 long lastHeapValue = 0;
+#endif
 
 void loop() {
     M5.update();
@@ -158,7 +160,7 @@ void loop() {
     unsigned long now = millis();
 
     //Current record:
-    //[STACK CHANGE] Loop() - Free Stack Space: 8524 (-2736)
+    //Loop() - Free Stack Space: 3132
 #ifdef _DISCORD_CLIENT_DEBUG
     if (now - lastStackCheck >= 2000) {
         // Print unused stack for the task that is running loop()
@@ -187,7 +189,7 @@ void loop() {
     if (!update_wifi_status()) {
         M5.dis.drawpix(0, RED);
         Serial.println("[WIFI] Wi-Fi connection not established.");
-        delay(1000);
+        vTaskDelay(1000);
         return;
     }
 
@@ -238,5 +240,6 @@ void loop() {
             Serial.println("[WOL] Packet failed to send.");
             M5.dis.drawpix(0, RED);
         }
+        vTaskDelay(100);
     }
 }

@@ -4,7 +4,7 @@
 #include <StreamUtils.h>
 #endif
 
-#define DISCORD_API_URL "https://discord.com/api/v10"
+#define DISCORD_INTERACTION_LOG_PREFIX "[DISCORD][COMMAND] "
 
 namespace Discord::Interactions {
     uint64_t registerGlobalCommand(uint64_t applicationId, const ApplicationCommand& command, const char* botToken) {
@@ -12,7 +12,7 @@ namespace Discord::Interactions {
 
         if (!serializeCommand(command, doc)) return 0;
 
-        String url(DISCORD_API_URL "/applications/");
+        String url(DISCORD_HOST DISCORD_API_URI "/applications/");
         url += applicationId;
         url += "/commands";
 
@@ -22,10 +22,10 @@ namespace Discord::Interactions {
         HTTPClient _http;
         _http.begin(url, nullptr);
         StaticJsonDocument<512> response;
-        if (sendRest<512>(_http, "POST", url, "", botToken, &response)) {
+        if (sendRest<512>(_http, "POST", url, json, botToken, &response)) {
             uint64_t idString = response["id"];
 
-            Serial.print("[DISCORD][COMMAND] Guild command ");
+            Serial.print(DISCORD_INTERACTION_LOG_PREFIX "Global command ");
             Serial.print(idString);
             Serial.println(" registered.");
             _http.end();
@@ -40,7 +40,7 @@ namespace Discord::Interactions {
 
         if (!serializeCommand(command, doc)) return 0;
 
-        String url(DISCORD_API_URL "/applications/");
+        String url(DISCORD_HOST DISCORD_API_URI "/applications/");
         url += applicationId;
         url += "/guilds/";
         url += guildId;
@@ -52,10 +52,10 @@ namespace Discord::Interactions {
         HTTPClient _http;
         _http.begin(url, nullptr);
         StaticJsonDocument<512> response;
-        if (sendRest<512>(_http, "POST", url, "", botToken, &response)) {
+        if (sendRest<512>(_http, "POST", url, json, botToken, &response)) {
             uint64_t idString = response["id"];
 
-            Serial.print("[DISCORD][COMMAND] Guild command ");
+            Serial.print(DISCORD_INTERACTION_LOG_PREFIX "[COMMAND] Guild command ");
             Serial.print(idString);
             Serial.println(" registered.");
             _http.end();
@@ -67,7 +67,7 @@ namespace Discord::Interactions {
 
     bool deleteGlobalCommand(uint64_t applicationId, const String& commandId, const char* botToken) {
         HTTPClient _http;
-        String url(DISCORD_API_URL "/applications/");
+        String url(DISCORD_HOST DISCORD_API_URI "/applications/");
         url += applicationId;
         url += "/commands/";
         url += commandId;
@@ -81,7 +81,7 @@ namespace Discord::Interactions {
     bool deleteGuildCommand(
         uint64_t applicationId, const char* guildId, const String& commandId, const char* botToken) {
         HTTPClient _http;
-        String url(DISCORD_API_URL "/applications/");
+        String url(DISCORD_HOST DISCORD_API_URI "/applications/");
         url += applicationId;
         url += "/guilds/";
         url += guildId;
@@ -96,7 +96,7 @@ namespace Discord::Interactions {
 
     bool serializeCommand(const ApplicationCommand& command, StaticJsonDocument<1024>& doc) {
         if (!strlen(command.name) || strlen(command.name) > 32) {
-            Serial.println("[DISCORD][COMMAND] Invalid name provided!");
+            Serial.println(DISCORD_INTERACTION_LOG_PREFIX "Invalid name provided!");
             return false;
         }
         doc["name"] = command.name;
@@ -110,7 +110,7 @@ namespace Discord::Interactions {
                 JsonObject option_obj = options.createNestedObject();
                 ApplicationCommand::Option& option = command.options[i];
                 if (!strlen(option.name) || strlen(option.name) > 32) {
-                    Serial.println("[DISCORD][COMMAND] Invalid option name provided!");
+                    Serial.println(DISCORD_INTERACTION_LOG_PREFIX "Invalid option name provided!");
                     return false;
                 }
 
@@ -126,7 +126,7 @@ namespace Discord::Interactions {
                         JsonObject choice_obj = choice_array.createNestedObject();
                         ApplicationCommand::Option::Choice& choice = option.choices[i];
                         if (!strlen(choice.name) || strlen(choice.name) > 32) {
-                            Serial.println("[DISCORD][COMMAND] Invalid option name provided!");
+                            Serial.println(DISCORD_INTERACTION_LOG_PREFIX "Invalid option choice name provided!");
                             return false;
                         }
 
@@ -143,7 +143,7 @@ namespace Discord::Interactions {
                                 choice_obj["value"] = choice.doubleValue;
                                 break;
                             default:
-                                Serial.println("[DISCORD][COMMAND] Invalid option type provided with choice!");
+                                Serial.println(DISCORD_INTERACTION_LOG_PREFIX "Invalid option type provided with choice!");
                                 break;
                         }
                     }

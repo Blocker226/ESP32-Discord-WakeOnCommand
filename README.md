@@ -26,7 +26,7 @@ Currently the main code makes use of the M5Atom architecture for certain onboard
 2. Build and upload the code to the M5Stack Atom.
 3. Once the LED is green, press and hold the button for 2.5 seconds, the LED will turn purple, releasing it will let the ESP32 register the two global commands. This must be done when changes are made to the command structure.
 
-TBA
+TBC
 
 ## Usage
 TBA

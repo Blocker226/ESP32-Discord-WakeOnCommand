@@ -1,11 +1,11 @@
 # ESP32 Discord Wake-On-Command Bot
 
-DM and wake a target device anywhere, anytime!
+Send a Discord command or DM, and wake a target device anywhere, anytime!
 
 ## Description
 A self-contained Discord Bot that runs on an M5Stack Atom Lite and sends  a Wake-On-Lan signal to a hardcoded target device from a slash command. Built for ESP32 devices using Arduino C++, and runs on an M5Stack Atom Lite.
 
-Currently the main code makes use of the M5Atom architecture for certain onboard capabilities such as LED and button control. Expanded compatability for other ESP32 devices will come eventually.
+Currently the main code makes use of the M5Atom architecture for certain onboard capabilities such as LED and button control. **Expanded compatability for other ESP32 devices will come eventually.**
 
 ## Features
 - Simple ping command to poll responsiveness
@@ -22,4 +22,11 @@ Currently the main code makes use of the M5Atom architecture for certain onboard
 - [arduinoWebSockets](https://github.com/Links2004/arduinoWebSockets) 2.4.1
 
 ## Installation
-TBA after I cleanup code.
+1. Configure Wifi, Discord Bot token, and your own user ID in `privateconfig.template`, and rename the file to `privateconfig.h`.
+2. Build and upload the code to the M5Stack Atom.
+3. Once the LED is green, press and hold the button for 2.5 seconds, the LED will turn purple, releasing it will let the ESP32 register the two global commands. This must be done when changes are made to the command structure.
+
+TBA
+
+## Usage
+TBA

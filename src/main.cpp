@@ -19,9 +19,8 @@
 
 #define LOGIN_INTERVAL 30000 //Cannot be too short to give time to initially retrieve the gateway API
 
-//TODO: Don't rely on this.
 // This sets Arduino Stack Size - comment this line to use default 8K stack size
-SET_LOOP_TASK_STACK_SIZE(16 * 1024); // 16KB
+//SET_LOOP_TASK_STACK_SIZE(16 * 1024); // 16KB
 
 WiFiMulti wifiMulti;
 WiFiUDP UDP;
@@ -239,11 +238,5 @@ void loop() {
             Serial.println("[WOL] Packet failed to send.");
             M5.dis.drawpix(0, RED);
         }
-        //delay(84);
-    }
-
-    if (uxTaskGetStackHighWaterMark(NULL) <= 8 * 1024) {
-        M5.dis.drawpix(0, RED);
-        delay(5);
     }
 }

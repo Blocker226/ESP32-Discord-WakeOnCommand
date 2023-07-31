@@ -1,0 +1,17 @@
+#ifndef PRIVATECONFIG_H
+#define PRIVATECONFIG_H
+
+//Default wifi parameters
+const char* wifiSSID = ;
+const char* wifiPassword = ;
+
+//MAC address of the target device
+const char* macAddress = ;
+
+//Secret bot token
+const char* botToken = ;
+
+//Bot owner's user ID
+uint64_t botOwnerId = ;
+
+#endif //PRIVATECONFIG_H

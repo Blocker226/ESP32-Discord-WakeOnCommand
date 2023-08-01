@@ -18,7 +18,7 @@ Currently the main code makes use of the M5Atom architecture for certain onboard
 
 ## Dependencies
 - [M5Atom](https://github.com/m5stack/M5Atom) 0.1.0
-    - FastLED 3.6.0
+    - [FastLED](https://github.com/FastLED/FastLED) 3.6.0
 - [WakeOnLan](https://github.com/a7md0/WakeOnLan) 1.1.7
 - [ArduinoJson](https://github.com/bblanchon/ArduinoJson) 6.21.2
 - [arduinoWebSockets](https://github.com/Links2004/arduinoWebSockets) 2.4.1

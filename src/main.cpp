@@ -109,6 +109,7 @@ void on_discord_interaction(const char* name, const JsonObject& interaction) {
         }
         else {
             response.content = "Access denied.";
+            response.flags = Discord::Bot::MessageResponse::Flags::EPHEMERAL;
             discord.sendCommandResponse(Discord::Bot::InteractionResponse::CHANNEL_MESSAGE_WITH_SOURCE, response);
         }
     }
@@ -224,7 +225,7 @@ void loop() {
             M5.dis.drawpix(0, GREEN);
         }
         discord.update(now);
-        }
+    }
     else {
         M5.dis.drawpix(0, BLUE);
     }
@@ -261,4 +262,4 @@ void loop() {
         }
         vTaskDelay(100);
     }
-    }
+}

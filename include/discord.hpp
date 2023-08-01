@@ -177,12 +177,10 @@ namespace Discord {
         Serial.print(" request to ");
         Serial.println(request->uri);
 #endif
-#endif
-
         long currentStack = uxTaskGetStackHighWaterMark(NULL);
         Serial.print("[STACK CHECK] sendPostTask() - Free Stack Space: ");
         Serial.println(currentStack);
-
+#endif
         if (httpResponseCode > 0) {
 #ifdef _DISCORD_CLIENT_DEBUG
 #ifdef ESP32

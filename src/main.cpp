@@ -65,6 +65,7 @@ void on_discord_interaction(const char* name, const JsonObject& interaction) {
         response.content = msg.c_str();
 #else
         response.content = "Uplink online.";
+        //response.flags = Discord::Bot::MessageResponse::Flags::EPHEMERAL;
 #endif
         discord.sendCommandResponse(Discord::Bot::InteractionResponse::CHANNEL_MESSAGE_WITH_SOURCE, response);
     }

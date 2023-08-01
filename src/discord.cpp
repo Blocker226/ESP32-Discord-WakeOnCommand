@@ -138,14 +138,37 @@ namespace Discord {
         StaticJsonDocument<256> doc;
         doc["type"] = static_cast<unsigned short>(type);
         JsonObject data = doc.createNestedObject("data");
-
         if (response.tts) {
             data["tts"] = true;
         }
-        data["content"] = response.content;
-        if (response.flags) {
-            data["flags"] = response.flags;
+
+        /*
+        This theory and its following safeguard is currently untested.
+
+        Buffer safety: If too many simultaneous interactions come in, the ESP32 will have trouble responding to all
+        of the interactions within their allotted 3-second window due to not having enough heap space to
+        queue and send responses. If that happens, a warning message is appended to the last possible response
+        to notify users the bot is being overloaded, and the bot will fail to respond to subsequent interactions until
+        the existing responses have been sent out.
+        */
+        if (esp_get_free_heap_size() < 2 * (4 * 1024 + 256)) {
+            data["content"] = response.content;
         }
+        else {
+            String msg((char*)0);
+            msg.reserve(strlen(response.content) + 102);
+            msg += response.content;
+            msg += "\n\n**Warning: Not enough memory for further processing. Please wait before sending further commands.**";
+            data["content"] = msg;
+        }
+
+
+        if (static_cast<uint8_t>(response.flags)) {
+            data["flags"] = static_cast<uint8_t>(response.flags);
+            Serial.print("Flags: ");
+            Serial.println(static_cast<uint8_t>(response.flags));
+        }
+
         sendCommandResponse(type, doc);
     }
 

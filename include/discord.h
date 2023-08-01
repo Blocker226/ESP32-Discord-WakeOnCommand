@@ -198,13 +198,19 @@ namespace Discord {
         //typedef std::function<void(const char* name, const Interaction& interaction)> InteractionCallback;
 
         struct MessageResponse {
+            enum class Flags : char {
+                NONE = 0,
+                SUPPRESS_EMBEDS = 1 << 2,
+                EPHEMERAL = 1 << 6,
+            };
+            
             bool tts = false;
             const char* content = "";
             // TODO: array of embed objects, 
             // allowed_mentions object, 
             // array of components, 
             // array of partial attachments
-            unsigned int flags = 0;
+            Flags flags = Flags::NONE;
         };
 
         Bot(const char* botToken, bool rateLimit = true);
@@ -273,6 +279,11 @@ namespace Discord {
         unsigned long _lastRateReset = 0;
     };
 
+    inline Bot::MessageResponse::Flags operator | (Bot::MessageResponse::Flags lhs, Bot::MessageResponse::Flags rhs)
+    {
+        return static_cast<Bot::MessageResponse::Flags>(static_cast<int>(lhs) | static_cast<int>(rhs));
+    }
+    
     template <size_t sz>
     struct AsyncAPIRequest {
         AsyncAPIRequest(

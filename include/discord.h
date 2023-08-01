@@ -1,3 +1,21 @@
+/*
+ * ESP32-Discord-WakeOnCommand v0.1
+ * Copyright (C) 2023  Neo Ting Wei Terrence
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 #include <mutex>
 
 #include <Arduino.h>
@@ -203,7 +221,7 @@ namespace Discord {
                 SUPPRESS_EMBEDS = 1 << 2,
                 EPHEMERAL = 1 << 6,
             };
-            
+
             bool tts = false;
             const char* content = "";
             // TODO: array of embed objects, 
@@ -224,7 +242,7 @@ namespace Discord {
         void onEvent(const EventCallback& cb);
         void onInteraction(const InteractionCallback& cb);
 
-        void sendCommandResponse(const InteractionResponse& type, const StaticJsonDocument<256>& response);
+        void sendCommandResponse(const InteractionResponse& type, const StaticJsonDocument<512>& response);
         void sendCommandResponse(const InteractionResponse& type, const MessageResponse& response);
 
         //void updatePresence();
@@ -279,11 +297,10 @@ namespace Discord {
         unsigned long _lastRateReset = 0;
     };
 
-    inline Bot::MessageResponse::Flags operator | (Bot::MessageResponse::Flags lhs, Bot::MessageResponse::Flags rhs)
-    {
+    inline Bot::MessageResponse::Flags operator | (Bot::MessageResponse::Flags lhs, Bot::MessageResponse::Flags rhs) {
         return static_cast<Bot::MessageResponse::Flags>(static_cast<int>(lhs) | static_cast<int>(rhs));
     }
-    
+
     template <size_t sz>
     struct AsyncAPIRequest {
         AsyncAPIRequest(
@@ -310,7 +327,7 @@ namespace Discord {
         const String& uri,
         const String& json = "",
         const char* authorisationToken = "");
-    
+
     template <size_t sz>
     bool sendRest(
         HTTPClient& client,

@@ -1,3 +1,21 @@
+/*
+ * ESP32-Discord-WakeOnCommand v0.1
+ * Copyright (C) 2023  Neo Ting Wei Terrence
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 #include <discord.h>
 
 #define DISCORD_MESSAGE_PREFIX "[DISCORD] "
@@ -91,7 +109,7 @@ namespace Discord {
         _interactionCallback = cb;
     }
 
-    inline void Bot::sendCommandResponse(const InteractionResponse& type, const StaticJsonDocument<256>& response) {
+    inline void Bot::sendCommandResponse(const InteractionResponse& type, const StaticJsonDocument<512>& response) {
 
 #ifdef _DISCORD_CLIENT_DEBUG
         unsigned long start = millis();
@@ -114,8 +132,11 @@ namespace Discord {
 #else
             [](const StaticJsonDocument<256>& response) {
 #endif
-
+#ifdef ESP32
                 log_i(DISCORD_MESSAGE_PREFIX "[COMMAND] Response sent.");
+#else
+                Serial.println("[COMMAND] Response sent.");
+#endif
 #ifdef _DISCORD_CLIENT_DEBUG
                 unsigned long end = millis();
                 Serial.print("Time to respond (ms): ");
@@ -124,7 +145,7 @@ namespace Discord {
             }, & _httpsMtx);
 
         return;
-    }
+            }
 
     void Bot::sendCommandResponse(const InteractionResponse & type, const MessageResponse & response) {
         if (_interactionId == 0 || _interactionToken.isEmpty()) {
@@ -135,7 +156,7 @@ namespace Discord {
 #endif
             return;
         }
-        StaticJsonDocument<256> doc;
+        StaticJsonDocument<512> doc;
         doc["type"] = static_cast<unsigned short>(type);
         JsonObject data = doc.createNestedObject("data");
         if (response.tts) {
@@ -146,7 +167,7 @@ namespace Discord {
         This theory and its following safeguard is currently untested.
 
         Buffer safety: If too many simultaneous interactions come in, the ESP32 will have trouble responding to all
-        of the interactions within their allotted 3-second window due to not having enough heap space to
+        of the interactions sequentially within their allotted 3-second window due to not having enough heap space to
         queue and send responses. If that happens, a warning message is appended to the last possible response
         to notify users the bot is being overloaded, and the bot will fail to respond to subsequent interactions until
         the existing responses have been sent out.
@@ -181,7 +202,7 @@ namespace Discord {
                 }
                 else {
                     Serial.println(DISCORD_MESSAGE_PREFIX "A WebSocket connection error has occured.");
-                }
+        }
                 break;
             case WStype_DISCONNECTED:
                 Serial.println(DISCORD_MESSAGE_PREFIX "Connection closed.");
@@ -217,7 +238,7 @@ namespace Discord {
             case WStype_PONG:
                 Serial.println(DISCORD_MESSAGE_PREFIX "Pong received.");
                 break;
-        }
+    }
     }
 
     void Bot::parseMessage(uint8_t * payload, size_t length) {
@@ -349,7 +370,7 @@ namespace Discord {
                 }
                 else {
                     resume();
-                }
+        }
 
                 _lastHeartbeatSend = _now;
                 _lastHeartbeatAck = _now;
@@ -371,8 +392,8 @@ namespace Discord {
                 break;
             default:
                 break;
-        }
     }
+}
 
     void Bot::identify() {
         String payload;
@@ -471,7 +492,7 @@ namespace Discord {
                 headerTok += authorisationToken;
                 client.addHeader("Authorization", headerTok);
             }
-        }
+    }
 
         int httpResponseCode = 0;
         if (!json.isEmpty()) {
@@ -520,5 +541,5 @@ namespace Discord {
         Serial.print("[DISCORD] Error code: ");
         Serial.println(httpResponseCode);
         return false;
-    }
+        }
 }

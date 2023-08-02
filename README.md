@@ -1,4 +1,5 @@
 # ESP32 Discord Wake-On-Command Bot
+![Screenshot 2023-08-02 110951](https://github.com/Blocker226/ESP32-Discord-WakeOnCommand/assets/6292676/a28d357d-0267-4ea9-b922-60c7b87f66b8)
 
 Send a Discord command or DM, and wake a target device anywhere, anytime!
 
@@ -24,9 +25,11 @@ Currently the main code makes use of the M5Atom architecture for certain onboard
 - [arduinoWebSockets](https://github.com/Links2004/arduinoWebSockets) 2.4.1
 
 ## Installation
-1. Configure Wifi, Discord Bot token, and your own user ID in `privateconfig.template`, and rename the file to `privateconfig.h`.
-2. Build and upload the code to the M5Stack Atom.
-3. Once the LED is green, press and hold the button for 2.5 seconds, the LED will turn purple, releasing it will let the ESP32 register the two global commands. This must be done when changes are made to the command structure.
+1. Download the source code and open it in Visual Studio Code.
+2. Use the [PlatformIO IDE](https://platformio.org/install/ide?install=vscode) to setup dependencies and build environments, or do it manually.
+4. Configure Wifi, Discord Bot token, and your own user ID in `privateconfig.template`, and rename the file to `privateconfig.h`.
+5. Plug in the M5Stack Atom to your PC via its USB-C port, then build and upload the code.
+6. Once the LED is green, press and hold the button for 2.5 seconds, the LED will turn purple, releasing it will let the ESP32 register the two global commands. This must be done when changes are made to the command structure.
 
 ## Usage
 

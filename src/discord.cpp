@@ -145,7 +145,7 @@ namespace Discord {
             }, & _httpsMtx);
 
         return;
-            }
+    }
 
     void Bot::sendCommandResponse(const InteractionResponse & type, const MessageResponse & response) {
         if (_interactionId == 0 || _interactionToken.isEmpty()) {
@@ -172,7 +172,7 @@ namespace Discord {
         to notify users the bot is being overloaded, and the bot will fail to respond to subsequent interactions until
         the existing responses have been sent out.
         */
-        if (esp_get_free_heap_size() < 2 * (4 * 1024 + 256)) {
+        if (esp_get_free_heap_size() > 2 * (4 * 1024 + 256)) {
             data["content"] = response.content;
         }
         else {
@@ -202,7 +202,7 @@ namespace Discord {
                 }
                 else {
                     Serial.println(DISCORD_MESSAGE_PREFIX "A WebSocket connection error has occured.");
-        }
+                }
                 break;
             case WStype_DISCONNECTED:
                 Serial.println(DISCORD_MESSAGE_PREFIX "Connection closed.");
@@ -238,7 +238,7 @@ namespace Discord {
             case WStype_PONG:
                 Serial.println(DISCORD_MESSAGE_PREFIX "Pong received.");
                 break;
-    }
+        }
     }
 
     void Bot::parseMessage(uint8_t * payload, size_t length) {
@@ -370,7 +370,7 @@ namespace Discord {
                 }
                 else {
                     resume();
-        }
+                }
 
                 _lastHeartbeatSend = _now;
                 _lastHeartbeatAck = _now;
@@ -392,8 +392,8 @@ namespace Discord {
                 break;
             default:
                 break;
+        }
     }
-}
 
     void Bot::identify() {
         String payload;
@@ -492,7 +492,7 @@ namespace Discord {
                 headerTok += authorisationToken;
                 client.addHeader("Authorization", headerTok);
             }
-    }
+        }
 
         int httpResponseCode = 0;
         if (!json.isEmpty()) {
@@ -541,5 +541,5 @@ namespace Discord {
         Serial.print("[DISCORD] Error code: ");
         Serial.println(httpResponseCode);
         return false;
-        }
+    }
 }

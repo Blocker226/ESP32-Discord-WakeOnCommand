@@ -11,7 +11,7 @@ Currently the main code makes use of the M5Atom architecture for certain onboard
 ## Features
 - Simple ping command to poll responsiveness
 - Wake command to send WOL packet to a specific device's MAC address
-    - Limited access to a specific user
+    - Limited access to specific users
 - Manual WOL packet sending via button press
 - Based on a expandable ESP32 Discord Bot framework (to be published separately)
     - Built-in command registration
@@ -27,7 +27,7 @@ Currently the main code makes use of the M5Atom architecture for certain onboard
 ## Installation
 1. Download the source code and open it in Visual Studio Code.
 2. Use the [PlatformIO IDE](https://platformio.org/install/ide?install=vscode) to setup dependencies and build environments, or do it manually.
-4. Configure Wifi, Discord Bot token, and your own user ID in `privateconfig.template`, and rename the file to `privateconfig.h`.
+4. Configure Wifi, Discord Bot token, and your own user IDs in `privateconfig.template`, and rename the file to `privateconfig.h`.
 5. Plug in the M5Stack Atom to your PC via its USB-C port, then build and upload the code.
 6. Once the LED is green, press and hold the button for 2.5 seconds, the LED will turn purple, releasing it will let the ESP32 register the two global commands. This must be done when changes are made to the command structure.
 
@@ -39,7 +39,7 @@ To toggle the bot's connection to Discord, press and hold for 5 seconds until th
 
 ### Commands
 - `/ping` - Checks for responsiveness. The bot will reply with "Uplink online."
-- `/wake` - Sends a WOL packet to the target MAC address specified in `privateconfig.h`. This only works for the user id specified in the file, and access will be denied for anyone else attempting to use the command.
+- `/wake` - Sends a WOL packet to the target MAC address specified in `privateconfig.h`. This only works for the user ids specified in the file, and access will be denied for anyone else attempting to use the command.
 
 ### LED Status Colours
 | Colour | Status                                                      |
@@ -64,4 +64,4 @@ Plug the M5Stack Atom into a PC, reboot and check serial if needed. Using Platfo
 
 ## Contributing
 
-If you've found a reproducible bug or error, do file an issue! Further contributing guidelines will be made when necessary.
+If you've found a reproducible bug or error, or you have a cool feature to suggest, do file an issue! Further contributing guidelines will be made when necessary.

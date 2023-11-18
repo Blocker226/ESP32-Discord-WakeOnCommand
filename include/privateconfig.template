@@ -11,7 +11,9 @@ const char* macAddress = ;
 //Secret bot token
 const char* botToken = ;
 
-//Bot owner's user ID
-uint64_t botOwnerId = ;
+//Bot owner's user IDs
+uint64_t botOwnerIds[] = {
+    
+};
 
 #endif //PRIVATECONFIG_H

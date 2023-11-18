@@ -95,7 +95,12 @@ void on_discord_interaction(const char* name, const JsonObject& interaction) {
         else {
             id = interaction["user"]["id"];
         }
-        if (id == botOwnerId) {
+
+        bool authorised = false;
+        for (int i = 0; i < sizeof(botOwnerIds) / sizeof(botOwnerIds[0]); ++i) {
+            if (id != botOwnerIds[i]) continue;
+
+            authorised = true;
             response.content = "Command acknowledged. Initiating remote wake sequence.";
             discord.sendCommandResponse(Discord::Bot::InteractionResponse::CHANNEL_MESSAGE_WITH_SOURCE, response);
             if (WOL.sendMagicPacket(macAddress)) {
@@ -106,7 +111,8 @@ void on_discord_interaction(const char* name, const JsonObject& interaction) {
                 M5.dis.drawpix(0, RED);
             }
         }
-        else {
+
+        if (!authorised) {
             response.content = "Access denied.";
             response.flags = Discord::Bot::MessageResponse::Flags::EPHEMERAL;
             discord.sendCommandResponse(Discord::Bot::InteractionResponse::CHANNEL_MESSAGE_WITH_SOURCE, response);
